@@ -1,11 +1,21 @@
 class Curso(
     var nome: String,
-    var codigoDoCurso: Int,
+    var codigoCurso: Int,
     var qtdMaxAlunos: Int
 ) {
-    init {
-        var professorTitular: ProfessorTitular
-        var professorAdjunto: ProfessorAdjunto
-        var listaAlunos = ArrayList<Aluno>()
+    var professorTitular: ProfessorTitular? = null
+    var professorAdjunto: ProfessorAdjunto? = null
+    var listaAlunos: MutableList<Aluno> = mutableListOf<Aluno>()
+
+    fun adicionarUmAluno(umAluno: Aluno): Boolean {
+        for (c in 0..qtdMaxAlunos) {
+            listaAlunos.add(umAluno)
+            return true
+        }
+        return false
+    }
+
+    fun excluirAluno(umAluno: Aluno) {
+        listaAlunos.remove(umAluno)
     }
 }
