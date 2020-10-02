@@ -1,10 +1,10 @@
 import java.time.LocalDateTime
 
 class DigitalHouseManager(val dataMatricula: LocalDateTime) {
-        var listaAlunos: MutableList<Aluno> = mutableListOf<Aluno>()
-        var listaProfessores: MutableList<Professor> = mutableListOf<Professor>()
-        var listaCursos: MutableList<Curso> = mutableListOf<Curso>()
-        var listaMatriculas: MutableList<Matricula> = mutableListOf<Matricula>()
+        var listaAlunos: MutableList<Aluno> = mutableListOf()
+        var listaProfessores: MutableList<Professor> = mutableListOf()
+        var listaCursos: MutableList<Curso> = mutableListOf()
+        var listaMatriculas: MutableList<Matricula> = mutableListOf()
 
     fun registrarCurso(nome: String, codigoCurso: Int, qtdMaxAlunos: Int){
         var curso = Curso(nome, codigoCurso, qtdMaxAlunos)
@@ -37,7 +37,7 @@ class DigitalHouseManager(val dataMatricula: LocalDateTime) {
 
     fun excluirProfessor(codigoProfessor: Int){
         var codigo: Professor? = null
-        if(codigo !=null){
+        if (codigo !=null){
             listaProfessores.remove(codigo)
         }
     }
@@ -48,23 +48,51 @@ class DigitalHouseManager(val dataMatricula: LocalDateTime) {
     }
 
     fun matricularAluno(codigoAluno: Int, codigoCurso:Int){
-        var alunoMatricula = listaAlunos[codigoAluno]
-        var cursoMatricula = listaCursos[codigoCurso]
-        var matricula = Matricula(alunoMatricula, cursoMatricula, dataMatricula)
-        listaMatriculas.add(matricula)
+        var alunoMatricula: Aluno?=null
+        alunoMatricula = listaAlunos[codigoAluno]
+        var cursoMatricula: Curso?=null
+        cursoMatricula = listaCursos[codigoCurso]
+
+        try{
+        if (alunoMatricula!=null &&
+            cursoMatricula!=null &&
+            cursoMatricula.listaAlunos.size<cursoMatricula.qtdMaxAlunos) {
+
+            var matricula = Matricula(alunoMatricula, cursoMatricula, dataMatricula)
+            listaMatriculas.add(matricula)
+            println("A matrícula foi realizada.")
+
+        }else{
+            throw Exception("Não foi possível realizar a matrícula pois não há vagas.")
+        }
+        } catch (ex: Exception){
+            println(ex.message)
+        }
     }
 
-    //dificuldade na criação deste método....
-
-    /*fun alocarProfessores(codigoCurso: Int,
+    fun alocarProfessores(codigoCurso: Int,
                           codigoProfessorTitular: Int,
                           codigoProfessorAdjunto: Int){
-        var novoProfessorTitular = listaProfessores[codigoProfessorTitular]
-        var novoProfessorAdjunto = listaProfessores[codigoProfessorAdjunto]
-        var cursoProfessores = listaCursos[codigoCurso]
-        if(novoProfessorAdjunto != null && novoProfessorTitular != null){
-            cursoProfessores.professorTitular = codigoProfessorTitular
+
+        var novoProfessorTitular: Professor?
+        novoProfessorTitular = listaProfessores[codigoProfessorTitular]
+        var novoProfessorAdjunto: Professor?
+        novoProfessorAdjunto = listaProfessores[codigoProfessorAdjunto]
+        var cursoProfessores: Curso?
+        cursoProfessores = listaCursos[codigoCurso]
+
+        try {
+            if (novoProfessorAdjunto != null &&
+                novoProfessorTitular != null &&
+                cursoProfessores != null) {
+
+                cursoProfessores.professorTitular = novoProfessorTitular as ProfessorTitular?
+                cursoProfessores.professorAdjunto = novoProfessorAdjunto as ProfessorAdjunto?
+
+            }
+        }catch (ex: Exception){
+            println(ex.message)
         }
-    }*/
+    }
 
 }

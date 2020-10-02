@@ -5,7 +5,7 @@ class Curso(
 ) {
     var professorTitular: ProfessorTitular? = null
     var professorAdjunto: ProfessorAdjunto? = null
-    var listaAlunos: MutableList<Aluno> = mutableListOf<Aluno>()
+    var listaAlunos: MutableList<Aluno> = mutableListOf()
 
     fun adicionarUmAluno(umAluno: Aluno): Boolean {
         for (c in 0..qtdMaxAlunos) {
